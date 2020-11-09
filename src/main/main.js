@@ -26,7 +26,7 @@ function start () {
     }
   }
 
-  const previousWindowState = stateManager.getWindowState() || {}
+  const previousWindowState = stateManager.getWindowState()
 
   if (previousWindowState) {
     browserWindowOptions.x = previousWindowState.x
@@ -37,7 +37,7 @@ function start () {
 
   const win = new BrowserWindow(browserWindowOptions)
 
-  if (previousWindowState.isMaximized) {
+  if (previousWindowState && previousWindowState.isMaximized) {
     win.maximize()
   }
 
