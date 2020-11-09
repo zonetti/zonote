@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>zonote</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
+  <link href="style.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+  <div id="top">
+    <div id="menu-button">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div id="file"></div>
+    <button id="close" type="button">𝗑</button>
+  </div>
+
+  <div id="remove-note">drag here to remove</div>
+
+  <ul id="tabs"></ul>
+  <button id="tab-scroll-left" class="tab-scroll" type="button">&laquo;</button>
+  <button id="tab-scroll-right" class="tab-scroll" type="button">&raquo;</button>
+
+  <div id="content">
+    <p id="edit-message">double click to edit</p>
+    <p id="back-message">double click to create a new note</p>
+  </div>
+
+  <ul id="menu"></ul>
+
+  <script src="../src/renderer/script.js"></script>
+
+</body>
+</html>

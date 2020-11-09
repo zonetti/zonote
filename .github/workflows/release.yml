@@ -1,0 +1,84 @@
+name: Release binaries
+
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macOS-latest]
+        include:
+          - os: windows-latest
+            zip_name: zonoto-win
+          - os: ubuntu-latest
+            zip_name: zonoto-linux
+          - os: macOS-latest
+            zip_name: zonoto-mac
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: npm run build:windows
+      
+      - name: Build Linux
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: npm run build:linux
+      
+      - name: Build Mac
+        if: matrix.os == 'macOS-latest'
+        shell: bash
+        run: npm run build:mac
+
+      - name: Zip Windows
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        env:
+          ZIP_NAME: ${{ matrix.zip_name }}
+        run: |
+          cd dist
+          7z a ../${ZIP_NAME}.zip .
+
+      - name: Zip Linux
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        env:
+          ZIP_NAME: ${{ matrix.zip_name }}
+        run: |
+          cd dist
+          7z a ../${ZIP_NAME}.zip .
+
+      - name: Zip Mac
+        if: matrix.os == 'macOS-latest'
+        shell: bash
+        env:
+          ZIP_NAME: ${{ matrix.zip_name }}
+        run: |
+          cd dist
+          7z a ../${ZIP_NAME}.zip .
+
+      - name: Upload release asset
+        if: github.event.action == 'published'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./${{ matrix.zip_name }}.zip
+          asset_name: ${{ matrix.zip_name }}.zip
+          asset_content_type: application/zip

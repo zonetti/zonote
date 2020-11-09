@@ -1,0 +1,571 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:300');
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:focus {
+  outline: 0;
+}
+
+body {
+  font-size: 16px;
+  font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", "STSong", Serif;
+}
+
+#top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  -webkit-app-region: drag;
+  height: 60px;
+  background: #556270;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+#remove-note {
+  position: fixed;
+  left: 50%;
+  list-style-type: none;
+  font-size: 13px;
+  line-height: 26px;
+  z-index: 100;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border: 2px dashed #FF6B6B;
+  background: #FAFAFA;
+  color: #FF6B6B;
+  border-radius: 5px;
+  padding: 2px 10px;
+  transition: opacity .2s;
+  opacity: 0;
+}
+
+#remove-note:hover {
+  border: 2px solid #FF6B6B;
+}
+
+#tabs {
+  position: fixed;
+  box-sizing: border-box;
+  top: 60px;
+  left: 0;
+  background: #E5E5E5;
+  width: 100%;
+  border: 1px solid #000;
+  border-top: none;
+  border-bottom: none;
+  z-index: 100;
+  list-style-type: none;
+  overflow: hidden;
+  display: none;
+}
+
+#tabs li {
+  display: inline-flex;
+  padding: 10px;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  border-bottom: 1px solid #000;
+}
+
+#tabs li:hover {
+  background: #EEE;
+}
+
+#tabs li span {
+  display: flex;
+}
+
+#tabs li button {
+  float: right;
+  opacity: 0;
+  transition: .1s;
+  top: 10px;
+  right: 10px;
+  background: #FF6B6B;
+  text-align: center;
+  font-size: 10px;
+  color: #FFF;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  border: 1px solid #C44D58;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#tabs li button:hover {
+  box-shadow: 1px 1px #333;
+  background: #EE5A5A;
+}
+
+#tabs li#new-tab-button {
+  min-width: 160px;
+  width: 100%;
+}
+
+#tabs li.active {
+  background: #FAFAFA;
+  border-bottom: 1px solid #FAFAFA;
+}
+
+#tabs li.active span {
+  cursor: text;
+}
+
+#tabs li:not(:first-child) {
+  border-left: 1px solid #000;
+}
+
+button.tab-scroll {
+  position: fixed;
+  z-index: 999;
+  top: 66px;
+  background: #4ECDC4;
+  border: none;
+  color: #FFF;
+  opacity: 1;
+  padding: 5px 0;
+  width: 30px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 18px;
+  font-weight: bold;
+  text-shadow: 1px 1px #333;
+  display: none;
+}
+
+button.tab-scroll:hover {
+  background: #5FDED5;
+  cursor: pointer;
+  opacity: 1;
+}
+
+button#tab-scroll-left {
+  border-left: 1px solid #000;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  left: 0;
+}
+
+button#tab-scroll-left:hover {
+  text-align: left;
+  padding-left: 5px;
+}
+
+button#tab-scroll-right {
+  border-right: 1px solid #000;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  right: 0;
+}
+
+button#tab-scroll-right:hover {
+  text-align: right;
+  padding-right: 5px;
+}
+
+#content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top: 60px;
+  width: 100%;
+  background: #FAFAFA;
+  border: 1px solid #000;
+  border-top: none;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#menu-button,
+#menu li,
+#file,
+#close,
+#back-message,
+.note div,
+#tabs button,
+#tabs #new-tab-button,
+button.tab-scroll,
+#remove-note,
+#edit-message {
+  user-select: none;
+}
+
+#menu-button, #close, #back-message {
+  -webkit-app-region: no-drag;
+}
+
+#close {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  background: #FF6B6B;
+  transition: .1s;
+  color: #FFF;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  font-size: 18px;
+  border: 1px solid #C44D58;
+  cursor: pointer;
+}
+
+#close:hover {
+  box-shadow: 1px 1px #333;
+  background: #EE5A5A;
+}
+
+#menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  height: 20px;
+  width: 30px;
+  cursor: pointer;
+}
+
+#file {
+  position: fixed;
+  top: 20px;
+  left: 70px;
+  font-size: 18px;
+  line-height: 20px;
+  color: #FFF;
+  text-shadow: 1px 1px #333;
+}
+
+#menu-button span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: #4ECDC4;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .1s;
+}
+
+#menu-button span:nth-child(1) {
+  top: 0px;
+}
+
+#menu-button span:nth-child(2), #menu-button span:nth-child(3) {
+  top: 8px;
+}
+
+#menu-button span:nth-child(4) {
+  top: 16px;
+}
+
+#menu-button.open span:nth-child(1), #menu-button.open span:nth-child(4) {
+  top: 8px;
+  width: 0%;
+  left: 50%;
+}
+
+#menu-button.open span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+#menu-button.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+#edit-message {
+  position: absolute;
+  border: 2px dashed #777;
+  border-radius: 5px;
+  background: #FAFAFA;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 6px 10px;
+  display: none;
+}
+
+#back-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  border: 2px dashed #888;
+  color: #556270;
+  border-radius: 5px;
+  padding: 6px 10px;
+}
+
+#menu {
+  position: fixed;
+  display: none;
+  top: 59px;
+  left: 0;
+  padding-top: 1px;
+  background: #556270;
+  z-index: 999;
+  border: 1px solid #000;
+  border-top: none;
+  color: #FFF;
+  text-shadow: 1px 1px #333;
+}
+
+#menu li {
+  width: 200px;
+  padding: 20px;
+  list-style-type: none;
+  font-size: 16px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+#menu li:hover {
+  background: #4ECDC4;
+  text-shadow: none;
+}
+
+#menu li span {
+  float: right;
+  margin-top: 1px;
+  font-size: 12px;
+}
+
+#content {
+  overflow: auto;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+  background: #EEE;
+}
+
+*::-webkit-scrollbar-track, *::-webkit-scrollbar-corner {
+	background: #EEE;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: #556270;	
+}
+
+.note {
+  position: absolute;
+  background: #EEE;
+  border: 1px solid #777;
+  box-shadow: 2px 2px #BBB;
+  transition: box-shadow .5s, opacity .5s, background .5s;
+  padding: 20px;
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 2000px;
+  max-height: 2000px;
+  font-size: 0.8em;
+  opacity: 1;
+}
+
+.note.selected {
+  border: 2px dashed #4ECDC4;
+  opacity: 0.9;
+  background: #EFEFEF;
+  box-shadow: none !important;
+}
+
+.note.selected.remove {
+  border: 2px solid #FF6B6B;
+  box-shadow: none !important;
+}
+
+.note textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  background: #E5E5E5;
+  border: 2px dashed #4ECDC4;
+}
+
+.note textarea {
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+.note:hover {
+  cursor: move;
+  box-shadow: 4px 4px #CCC;
+}
+
+.note .resizer-right {
+  width: 5px;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: e-resize;
+}
+
+.note .resizer-bottom {
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: n-resize;
+}
+
+.note .resizer-both {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: nw-resize;
+}
+
+.note .text {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.note .text:hover {
+  cursor: text;
+}
+
+.note .text *:not(:first-child) {
+  margin-top: 15px;
+}
+
+.note .text hr {
+  border: 0;
+  border-top: 1px solid #CCC;
+}
+
+.note .text hr:not(:first-child) {
+  margin: 20px 0 !important;
+}
+
+.note .text ul,
+.note .text ol {
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+.note .text li {
+  margin-top: 8px !important;
+}
+
+.note .text h1:not(:first-child),
+.note .text h2:not(:first-child) {
+  padding: 10px 0;
+}
+
+.note .text h3:not(:first-child),
+.note .text h4:not(:first-child) {
+  padding: 5px 0;
+}
+
+.note .text h5:not(:first-child),
+.note .text h6:not(:first-child) {
+  padding: 3px 0;
+}
+
+.note .text h1 {
+  font-size: 2.5em;
+}
+
+.note .text h2 {
+  font-size: 2em;
+}
+
+.note .text h3 {
+  font-size: 1.6em;
+}
+
+.note .text h4 {
+  font-size: 1.3em;
+}
+
+.note .text h5 {
+  font-size: 1.2em;
+}
+
+.note .text h6 {
+  font-size: 1.1em;
+}
+
+.note .text a {
+  color: #4ECDC4;
+  border-bottom: 1px solid #4ECDC4;
+  text-decoration: none;
+}
+
+.note .text a:visited,
+.note .text a:active,
+.note .text a:hover {
+  color: #3DBCB3;
+  border-bottom: 1px solid #3DBCB3;
+}
+
+.note .text blockquote {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  border-left: 5px solid #CCC;
+}
+
+.note .text pre {
+  display: block;
+  padding: 10px;
+  margin: 0 0 10px;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background: #FAFAFA;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+}
+
+.note .text table {
+  display: table;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: 1px solid #CCC;
+  background: #FAFAFA;
+}
+
+.note .text thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.note .text tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.note .text tr th,
+.note .text tr td {
+  vertical-align: bottom;
+  padding: 8px;
+  vertical-align: top;
+  border-top: 1px solid #CCC;
+}
+
+.note .text tr th {
+  border-bottom: 2px solid #CCC;
+}
+
+.note .text img {
+  display: inline-block;
+  max-width: 33%;
+}

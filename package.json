@@ -1,0 +1,26 @@
+{
+  "name": "zonote",
+  "version": "0.1.0",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron . --dev",
+    "build:windows": "electron-packager . --out=dist --asar --overwrite --icon=build/icon.ico --version-string.CompanyName=zonetti --version-string.FileDescription=zonetti --version-string.ProductName=zonote",
+    "build:linux": "electron-packager . --out=dist --asar --overwrite --icon=build/icon.png",
+    "build:mac": "electron-packager . --out=dist --asar --overwrite --icon=build/icon.icns"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zonetti/zonote.git"
+  },
+  "dependencies": {
+    "electron-store": "^5.2.0",
+    "events": "^3.2.0",
+    "hotkeys-js": "^3.8.1",
+    "marked": "^1.1.0",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "electron": "^9.0.0",
+    "electron-packager": "^15.0.0"
+  }
+}
