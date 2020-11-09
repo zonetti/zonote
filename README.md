@@ -8,3 +8,15 @@
   <br>
   <img src="https://github.com/zonetti/zonote/raw/master/preview.gif" width="80%">
 </p>
+
+### Download
+
+You can find the latest version to download on the [release page](https://github.com/zonetti/zonote/releases/latest).
+
+### Development
+
+```
+git clone git@github.com:zonetti/zonote.git
+cd zonote
+npm install && npm start
+```
