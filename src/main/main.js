@@ -26,7 +26,7 @@ function start () {
     }
   }
 
-  const previousWindowState = stateManager.getWindowState()
+  const previousWindowState = stateManager.getWindowState() || {}
 
   if (previousWindowState) {
     browserWindowOptions.x = previousWindowState.x
