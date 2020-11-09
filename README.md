@@ -6,7 +6,7 @@
   All in one .txt file
   <br>
   <br>
-  <img src="https://github.com/zonetti/zonote/raw/master/preview.gif" width="80%">
+  <img src="https://github.com/zonetti/zonote/raw/master/preview.gif" width="95%">
 </p>
 
 ### Download
