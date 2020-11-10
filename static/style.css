@@ -426,12 +426,16 @@ button.tab-scroll,
   height: 100%;
   resize: none;
   background: #EEE;
-  border: 2px dashed #4ECDC4;
+  border: 2px dashed #333;
+  color: #333;
   font-family: monospace;
   font-size: 1.2em;
 }
 .note.white textarea { background: #FAFAFA; }
-
+.note.black textarea { background: #222; color: #FAFAFA; border-color: #FAFAFA; }
+.note.primary textarea { background: #4ECDC4; color: #333; border-color: #333; }
+.note.warning textarea { background: #FEE074; color: #333; border-color: #333; }
+.note.danger textarea { background: #FF6B6B; color: #333; border-color: #333; }
 
 .note .resizer-right {
   width: 5px;
