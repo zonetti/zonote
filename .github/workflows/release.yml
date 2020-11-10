@@ -14,11 +14,11 @@ jobs:
         os: [windows-latest, ubuntu-latest, macOS-latest]
         include:
           - os: windows-latest
-            zip_name: zonoto-win
+            zip_name: zonote-win
           - os: ubuntu-latest
-            zip_name: zonoto-linux
+            zip_name: zonote-linux
           - os: macOS-latest
-            zip_name: zonoto-mac
+            zip_name: zonote-mac
 
     steps:
       - uses: actions/checkout@v1
@@ -45,26 +45,7 @@ jobs:
         shell: bash
         run: npm run build:mac
 
-      - name: Zip Windows
-        if: matrix.os == 'windows-latest'
-        shell: bash
-        env:
-          ZIP_NAME: ${{ matrix.zip_name }}
-        run: |
-          cd dist
-          7z a ../${ZIP_NAME}.zip .
-
-      - name: Zip Linux
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        env:
-          ZIP_NAME: ${{ matrix.zip_name }}
-        run: |
-          cd dist
-          7z a ../${ZIP_NAME}.zip .
-
-      - name: Zip Mac
-        if: matrix.os == 'macOS-latest'
+      - name: Zip
         shell: bash
         env:
           ZIP_NAME: ${{ matrix.zip_name }}
