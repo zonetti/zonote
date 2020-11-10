@@ -318,6 +318,7 @@ colorPickerElm.querySelectorAll('span').forEach(spanElm => {
   spanElm.onclick = e => {
     e.preventDefault()
     GUI_STATE.noteRightClicked.color = spanElm.className.split(' ')[0]
+    EVENTS.emit('touch state')
     hideColorPicker()
   }
 })
