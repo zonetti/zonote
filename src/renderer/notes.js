@@ -11,6 +11,7 @@ const contentElm = document.getElementById('content')
 const editMessageElm = document.getElementById('edit-message')
 const backMessageElm = document.getElementById('back-message')
 const removeNoteElm = document.getElementById('remove-note')
+const colorPickerElm = document.getElementById('color-picker')
 
 function generateId () {
   const id = shortid().replace(/\W/g, '') + new Date().getTime()
@@ -62,11 +63,12 @@ function enableResizing (noteElm) {
   
   function stopResizing () {
     GUI_STATE.isResizing = false
-    GUI_STATE.elementBeingResizedElm.className = 'note'
+    UTIL.removeClass(GUI_STATE.elementBeingResizedElm, 'selected')
     GUI_STATE.elementBeingResizedElm = null
     document.documentElement.onmousemove = null
     document.documentElement.onmouseup = null
     EVENTS.emit('touch state')
+    EVENTS.emit('render')
   }
   
   function startResizing (event) {
@@ -78,7 +80,7 @@ function enableResizing (noteElm) {
     resizeStartWidth = parseInt(document.defaultView.getComputedStyle(GUI_STATE.elementBeingResizedElm).width, 10)
     resizeStartY = event.pageY
     resizeStartHeight = parseInt(document.defaultView.getComputedStyle(GUI_STATE.elementBeingResizedElm).height, 10)
-    GUI_STATE.elementBeingResizedElm.className = 'note selected'
+    UTIL.addClass(GUI_STATE.elementBeingResizedElm, 'selected')
     document.documentElement.onmousemove = resize(this.className)
     document.documentElement.onmouseup = stopResizing
   }
@@ -123,7 +125,12 @@ function enableDragging (noteElm) {
     note.y = noteNewPosition[1] - CANVAS_PADDING()
     GUI_STATE.elementBeingDraggedElm.style.left = noteNewPosition[0] + 'px'
     GUI_STATE.elementBeingDraggedElm.style.top = noteNewPosition[1] + 'px'
-    GUI_STATE.elementBeingDraggedElm.className = STATE.isInRemoveNoteArea ? 'note selected remove' : 'note selected'
+    UTIL.addClass(GUI_STATE.elementBeingDraggedElm, 'selected')
+    if (STATE.isInRemoveNoteArea) {
+      UTIL.addClass(GUI_STATE.elementBeingDraggedElm, 'remove')
+    } else {
+      UTIL.removeClass(GUI_STATE.elementBeingDraggedElm, 'remove')
+    }
   }
   
   function stopDragging () {
@@ -146,13 +153,14 @@ function enableDragging (noteElm) {
         EVENTS.emit('render')
       }
     }
-    GUI_STATE.elementBeingDraggedElm.className = 'note'
+    UTIL.removeClasses(GUI_STATE.elementBeingDraggedElm, ['selected', 'remove'])
     GUI_STATE.isDragging = false
     removeNoteElm.style.opacity = 0
     GUI_STATE.elementBeingDraggedElm = null
     document.onmouseup = null
     document.onmousemove = null
     EVENTS.emit('touch state')
+    EVENTS.emit('render')
   }
 
   function startDragging (event) {
@@ -164,7 +172,7 @@ function enableDragging (noteElm) {
     draggingMouseDifference[0] = GUI_STATE.elementBeingDraggedElm.offsetLeft - event.pageX
     draggingMouseDifference[1] = GUI_STATE.elementBeingDraggedElm.offsetTop - (event.pageY - TOP_OFFSET())
     GUI_STATE.isDragging = true
-    GUI_STATE.elementBeingDraggedElm.className = 'note selected'
+    UTIL.addClass(GUI_STATE.elementBeingDraggedElm, 'selected')
     removeNoteElm.style.opacity = 1
     removeNoteElm.style.top = (TOP_OFFSET() + removeNoteElm.offsetHeight) + 'px'
     document.onmouseup = stopDragging
@@ -234,7 +242,7 @@ EVENTS.on('render note', note => {
 
   noteElm.dataset.id = note.id
   noteElm.dataset.tab = note.t
-  noteElm.className = 'note'
+  noteElm.className = 'note ' + (note.color || 'default')
   noteElm.style.display = note.t === STATE.activeTab ? 'block' : 'none'
   noteElm.style.top = note.y + CANVAS_PADDING() + 'px'
   noteElm.style.left = note.x + CANVAS_PADDING() + 'px'
@@ -284,11 +292,35 @@ EVENTS.on('render note', note => {
     EVENTS.emit('render note text', note, noteElm)
   }
 
+  noteElm.addEventListener('contextmenu', e => {
+    e.preventDefault()
+    colorPickerElm.style.display = 'block'
+    colorPickerElm.style.top = (e.pageY - 15) + 'px'
+    colorPickerElm.style.left = (e.pageX - 15) + 'px'
+    colorPickerElm.style.zIndex = NEXT_ZINDEX()
+    GUI_STATE.noteRightClicked = note
+  })
+
   contentElm.appendChild(noteElm)
 })
 
 removeNoteElm.onmouseenter = () => { STATE.isInRemoveNoteArea = true }
 removeNoteElm.onmouseleave = () => { STATE.isInRemoveNoteArea = false }
+
+function hideColorPicker () {
+  colorPickerElm.style.display = 'none'
+  GUI_STATE.noteRightClicked = null
+}
+
+colorPickerElm.onmouseleave = hideColorPicker
+
+colorPickerElm.querySelectorAll('span').forEach(spanElm => {
+  spanElm.onclick = e => {
+    e.preventDefault()
+    GUI_STATE.noteRightClicked.color = spanElm.className.split(' ')[0]
+    hideColorPicker()
+  }
+})
 
 contentElm.ondblclick = event => {
   const newNote = {
@@ -298,7 +330,8 @@ contentElm.ondblclick = event => {
     w: 200,
     h: 200,
     text: '',
-    isEditing: true
+    isEditing: true,
+    color: 'default'
   }
   if (newNote.x < 0) newNote.x = 0
   if (newNote.y < 0) newNote.y = 0

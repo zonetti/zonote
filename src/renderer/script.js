@@ -28,6 +28,7 @@ window.GET_NOTE_BY_ID = id => {
 }
 // <- REFACTOR
 
+require('../src/renderer/util')
 require('../src/renderer/top_menu')
 require('../src/renderer/tabs')
 require('../src/renderer/notes')

@@ -6,14 +6,17 @@ const NOTE_MAX_HEIGHT = 5000
 const isTabs = /^znt-tabs\|.+/
 const isNote = /^znt-note\|\d+,\d+,\d+,\d+,\d+/
 
-function newNote ({ howManyTabs, t = 0, x = 0, y = 0, w = 500, h = 300 }) {
+const colors = ['default', 'white', 'black', 'primary', 'warning', 'danger']
+
+function newNote ({ howManyTabs, t = 0, x = 0, y = 0, w = 500, h = 300, c = 0 }) {
   const note = {
     t: t >= 0 ? t : 0,
     x: x >= 0 ? x : 0,
     y: y >= 0 ? y : 0,
     w: w >= NOTE_MIN_WIDTH && w <= NOTE_MAX_WIDTH ? w : NOTE_MIN_WIDTH,
     h: h >= NOTE_MIN_HEIGHT && h <= NOTE_MAX_HEIGHT ? h : NOTE_MIN_HEIGHT,
-    text: ''
+    text: '',
+    color: (c < 0 || c > colors.length - 1) ? colors[0] : colors[c]
   }
   if (t > 0 && (!howManyTabs || t > howManyTabs - 1)) note.t = 0
   return note
@@ -49,8 +52,8 @@ function fromText (text) {
         notes.push(currentNote)
         currentNote = null
       }
-      const [t, x, y, w, h] = line.split('|').pop().split(',').map(n => parseInt(n, 10))
-      currentNote = newNote({ howManyTabs: tabs.length, t, x, y, w, h })
+      const [t, x, y, w, h, c] = line.split('|').pop().split(',').map(n => parseInt(n, 10))
+      currentNote = newNote({ howManyTabs: tabs.length, t, x, y, w, h, c })
       continue
     }
 
@@ -79,7 +82,9 @@ function toText ({ tabs, notes }) {
 
   for (let i = 0; i < notes.length; i++) {
     const note = notes[i]
-    text += `znt-note|${note.t},${note.x},${note.y},${note.w},${note.h}\r\n`
+    const color = note.color || 'default'
+    note.c = colors.indexOf(color)
+    text += `znt-note|${note.t},${note.x},${note.y},${note.w},${note.h},${note.c}\r\n`
     text += note.text.replace(/\r/g, '').replace(/\n/g, '\r\n') + '\r\n'
   }
 
