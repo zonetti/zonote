@@ -66,11 +66,9 @@ async function handleCurrentState () {
     message: 'You have unsaved changes in your current file.\nWhat do you want to do?',
     buttons: ['Save changes', 'Discard changes', 'Cancel']
   })
+  if (chosenAction === 0) return EVENTS.emit('save file')
   if (chosenAction === 1) return 'continue'
   if (chosenAction === 2) return 'cancel'
-  await saveFile()
-  await new Promise(res => setTimeout(res, 100))
-  return 'continue'
 }
 
 EVENTS.on('new file', async () => {
