@@ -1,6 +1,6 @@
 {
   "name": "zonote",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron . --dev",
