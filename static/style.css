@@ -181,6 +181,7 @@ button#tab-scroll-right:hover {
   border-top: none;
   box-sizing: border-box;
   padding: 20px;
+  font-size: 1.3em;
 }
 
 #menu-button,
@@ -374,8 +375,8 @@ button.tab-scroll,
   cursor: pointer;
 }
 
-#color-picker span.mr-5 { margin-right: 5px; }
-#color-picker span.mb-5 { margin-bottom: 5px; }
+#color-picker span.mr-5 { margin-right: 4px; }
+#color-picker span.mb-5 { margin-bottom: 4px; }
 #color-picker span.default { background: #EEE; }
 #color-picker span.white { background: #FAFAFA; }
 #color-picker span.black { background: #222; }
