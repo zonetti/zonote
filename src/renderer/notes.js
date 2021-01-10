@@ -1,5 +1,6 @@
 const shortid = require('shortid')
 const marked = require('marked')
+const DOMPurify = require('dompurify')
 
 marked.setOptions({
   breaks: true,
@@ -185,7 +186,7 @@ function enableDragging (noteElm) {
 EVENTS.on('render note text', (note, noteElm) => {
   const noteTextElm = document.createElement('div')
   noteTextElm.className = 'text'
-  noteTextElm.innerHTML = marked(note.text)
+  noteTextElm.innerHTML = DOMPurify.sanitize(marked(note.text))
   noteTextElm.onclick = event => {
     EVENTS.emit('hide menu')
     event.stopPropagation()
