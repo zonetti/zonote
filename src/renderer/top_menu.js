@@ -96,6 +96,11 @@ EVENTS.on('save file', async () => {
   if (STATE.path) {
     await new Promise(resolve => {
       IPC.once('done', (event, filePath) => {
+        if (filePath === 'save as') {
+          delete STATE.path
+          EVENTS.emit('save file')
+          return resolve()
+        }
         if (filePath) {
           STATE.path = filePath
           STATE.isDirty = false

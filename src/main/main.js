@@ -83,6 +83,10 @@ function start () {
       stateManager.saveStateToFile(filePath, state)
       event.reply('done', filePath, path.basename(filePath))
     } catch (err) {
+      if (err.message && err.message.includes('ENOENT')) {
+        delete state.path
+        return event.reply('done', 'save as')
+      }
       console.log(err)
       dialog.showMessageBoxSync({ message: 'Oh no... something is not right' })
       event.reply('done')
