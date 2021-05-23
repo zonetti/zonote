@@ -8,9 +8,9 @@ const fileElm = document.getElementById('file')
 function createMenuButton (text, key) {
   const shortcut = process.platform === 'darwin' ? 'command' : 'ctrl'
   const buttonElm = document.createElement('li')
-  buttonElm.innerHTML = text
+  buttonElm.innerText = text
   const span = document.createElement('span')
-  span.innerHTML = `${shortcut} + ${key}`
+  span.innerText = `${shortcut} + ${key}`
   buttonElm.appendChild(span)
   return buttonElm
 }
@@ -23,7 +23,7 @@ const menuButtonTabsElm = document.createElement('li')
 menuButtonTabsElm.id = 'tabs-menu-button'
 
 const menuButtonExitElm = document.createElement('li')
-menuButtonExitElm.innerHTML = 'exit'
+menuButtonExitElm.innerText = 'exit'
 
 menuElm.appendChild(menuButtonNewElm)
 menuElm.appendChild(menuButtonOpenElm)
@@ -33,8 +33,8 @@ menuElm.appendChild(menuButtonExitElm)
 
 EVENTS.on('render', () => {
   document.title = STATE.path || 'zonote'
-  fileElm.innerHTML = `${STATE.isDirty ? '*' : ''}${STATE.file}`
-  menuButtonTabsElm.innerHTML = STATE.tabs.length > 0 ? 'disable tabs' : 'enable tabs'
+  fileElm.innerText = `${STATE.isDirty ? '*' : ''}${STATE.file}`
+  menuButtonTabsElm.innerText = STATE.tabs.length > 0 ? 'disable tabs' : 'enable tabs'
 })
 
 EVENTS.on('hide menu', () => {
@@ -51,7 +51,7 @@ EVENTS.on('toggle menu', () => {
 
 EVENTS.on('touch state', () => {
   STATE.isDirty = true
-  fileElm.innerHTML = `*${STATE.file}`
+  fileElm.innerText = `*${STATE.file}`
 })
 
 EVENTS.on('lose focus', () => {
