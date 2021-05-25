@@ -43,7 +43,7 @@ EVENTS.on('render tab scroll', () => {
 })
 
 EVENTS.on('render', () => {
-  tabsElm.innerHTML = ''
+  tabsElm.innerText = ''
   tabsElm.style.display = STATE.tabs.length > 0 ? 'inline-flex' : 'none'
   tabScrollLeftElm.style.display = 'none'
   tabScrollRightElm.style.display = 'none'
@@ -105,7 +105,7 @@ EVENTS.on('render', () => {
 
     const spanElm = document.createElement('span')
     spanElm.ondragover = event => event.preventDefault()
-    spanElm.innerHTML = tabText
+    spanElm.innerText = tabText
 
     if (isActiveTab) {
       spanElm.contentEditable = 'true'
@@ -116,7 +116,7 @@ EVENTS.on('render', () => {
     removeButtonElm.ondragover = event => event.preventDefault()
     removeButtonElm.type = 'button'
     removeButtonElm.style.opacity = isActiveTab ? 1 : 0
-    removeButtonElm.innerHTML = '𝗑'
+    removeButtonElm.innerText = '𝗑'
     removeButtonElm.onclick = event => {
       event.stopPropagation()
       EVENTS.emit('remove tab', tabIndex)
@@ -130,17 +130,17 @@ EVENTS.on('render', () => {
       tabElm.onclick = event => event.stopPropagation()
       spanElm.oninput = function () {
         EVENTS.emit('touch state')
-        if (this.innerHTML.length <= 100) return
-        this.innerHTML = this.innerHTML.substring(0, 100)
+        if (this.innerText.length <= 100) return
+        this.innerText = this.innerText.substring(0, 100)
       }
       spanElm.onblur = function () {
-        const value = this.innerHTML
+        const value = this.innerText
           .replace(/&nbsp;/g, ' ')
           .replace(/[,|]/g, '')
           .replace(/\s+/g, ' ')
           .trim()
-        this.innerHTML = value || 'new tab'
-        STATE.tabs[tabIndex] = this.innerHTML
+        this.innerText = value || 'new tab'
+        STATE.tabs[tabIndex] = this.innerText
       }
     } else {
       tabElm.style.userSelect = 'none'
@@ -167,9 +167,9 @@ EVENTS.on('render', () => {
 
   const newTabButtonElm = document.createElement('li')
   newTabButtonElm.id = 'new-tab-button'
-  newTabButtonElm.innerHTML = '+'
-  newTabButtonElm.onmouseenter = function () { this.innerHTML = '+ new tab' }
-  newTabButtonElm.onmouseleave = function () { this.innerHTML = '+' }
+  newTabButtonElm.innerText = '+'
+  newTabButtonElm.onmouseenter = function () { this.innerText = '+ new tab' }
+  newTabButtonElm.onmouseleave = function () { this.innerText = '+' }
   newTabButtonElm.onclick = () => {
     STATE.tabs.push('new tab')
     STATE.activeTab = STATE.tabs.length - 1
